@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.16.3
+- FIX (kiosk prices all dropped to 5 gold): when the shop rebuilt its item list, the kiosk re-recorded the entries' CURRENT (already discounted) prices as the "original" and took 10% off again, every time, until every item bottomed out at 5 gold (5 -> 4.5 rounds back to 5). The kiosk now remembers the first full price it saw for each item id and always discounts from that, so the price is exactly original x 0.9 (rounded) no matter how often the shop rebuilds. Units bought are also now tracked by item id so a rebuild no longer forgets them.
+- Not built or tested in game.
+
 ## 3.16.2
 - CHANGE (picker look): the shop picker now looks like the game's own question box: the dialogue frame at the bottom of the screen, left-aligned text, a pale highlight on the chosen line. The X sits inside the frame, top right.
 - FIX (picker with a controller): the picker did not take part in the game's cursor snapping, so a controller could not move or choose (also on mobile with a controller). Buttons now have IDs and up/down neighbours, the cursor snaps to the chosen line, D-pad / stick up and down move it, A chooses, B closes.

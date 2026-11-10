@@ -4,7 +4,7 @@
     <!-- ONE assembly. The Code manifest (Code/manifest.json) points its EntryDll at this exact name. -->
     <AssemblyName>BentleyPlayz.FastFoodUsefulStuff.Smapi</AssemblyName>
     <RootNamespace>BentleyPlayz.FastFoodUsefulStuff.Smapi</RootNamespace>
-    <Version>3.16.2</Version>
+    <Version>3.16.3</Version>
 
     <!-- Stardew Valley 1.6 / SMAPI 4.x run on .NET 6. (The old decompiled project said netcoreapp6.0, which is the same runtime.) -->
     <TargetFramework>net6.0</TargetFramework>

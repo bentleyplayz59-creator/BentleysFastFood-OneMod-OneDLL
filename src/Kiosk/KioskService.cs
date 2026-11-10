@@ -50,8 +50,14 @@ internal sealed class KioskService
         /// <summary>Every entry the shop listed when we looked (discounted or not). A new entry we do not know means the shop rebuilt its list.</summary>
         public readonly HashSet<ISalable> Known = new HashSet<ISalable>();
 
-        /// <summary>Units bought of each entry during this visit.</summary>
-        public readonly Dictionary<ISalable, int> Bought = new Dictionary<ISalable, int>();
+        /// <summary>
+        /// The FULL-price entry for each item id, recorded the first time the shop showed it. A rebuilt shop list
+        /// can still hold entries we already discounted; this makes sure a discount is never taken off a discounted price.
+        /// </summary>
+        public readonly Dictionary<string, ItemStockInformation> OriginalById = new Dictionary<string, ItemStockInformation>();
+
+        /// <summary>Units bought of each item id during this visit (by id, so it survives the shop rebuilding its list).</summary>
+        public readonly Dictionary<string, int> Bought = new Dictionary<string, int>();
     }
 
     private readonly ModContext context;
@@ -283,8 +289,23 @@ internal sealed class KioskService
         {
             s.Known.Add(item);
             ItemStockInformation info = s.Shop.itemPriceAndStock[item];
-            if (info.TradeItem == null && info.Price > 0)
-                s.Original[item] = info;
+            if (info.TradeItem != null || info.Price <= 0)
+                continue;
+
+            // 3.16.3: never treat a price we already discounted as the original (that compounded 10% off over and
+            // over until every item cost 5 gold). The first full-price entry seen for an item id is the original.
+            string id = item.QualifiedItemId;
+            if (s.OriginalById.TryGetValue(id, out ItemStockInformation firstSeen))
+            {
+                info.Price = firstSeen.Price;
+                info.Stock = firstSeen.Stock; // remaining stock is worked out from Bought by id
+            }
+            else
+            {
+                s.OriginalById[id] = info;
+            }
+
+            s.Original[item] = info;
         }
     }
 
@@ -347,7 +368,6 @@ internal sealed class KioskService
                 continue;
 
             DevLog.Say("kiosk: the shop rebuilt its list, locking the stock again");
-            s.Bought.Clear();
             this.Snapshot(s);
             int dealsNow = this.DealsLeft();
             if (dealsNow > 0)
@@ -369,7 +389,8 @@ internal sealed class KioskService
 
             int units = last - now;
             s.LastStock[item] = now;
-            s.Bought[item] = (s.Bought.TryGetValue(item, out int before) ? before : 0) + units;
+            string boughtId = item.QualifiedItemId;
+            s.Bought[boughtId] = (s.Bought.TryGetValue(boughtId, out int before) ? before : 0) + units;
             sold.Add(new KeyValuePair<ISalable, int>(item, units));
         }
 
@@ -497,7 +518,7 @@ internal sealed class KioskService
         if (original == int.MaxValue)
             return int.MaxValue;
 
-        int bought = s.Bought.TryGetValue(item, out int value) ? value : 0;
+        int bought = s.Bought.TryGetValue(item.QualifiedItemId, out int value) ? value : 0;
         return Math.Max(0, original - bought);
     }
 
