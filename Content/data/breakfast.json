@@ -1,0 +1,315 @@
+{
+  "Changes": [
+    {
+      "LogName": "Load Pancake Stack texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Breakfast_PancakeStack",
+      "FromFile": "assets/breakfast/pancakes.png"
+    },
+    {
+      "LogName": "Load Bacon and Egg Sandwich texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Breakfast_BaconEggSandwich",
+      "FromFile": "assets/breakfast/baconegg.png"
+    },
+    {
+      "LogName": "Load Breakfast Burrito texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Breakfast_BreakfastBurrito",
+      "FromFile": "assets/breakfast/burrito.png"
+    },
+    {
+      "LogName": "Load Hash Browns texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Breakfast_HashBrowns",
+      "FromFile": "assets/breakfast/hashbrowns.png"
+    },
+    {
+      "LogName": "Load Orange Juice texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Breakfast_OrangeJuice",
+      "FromFile": "assets/breakfast/orangejuice.png"
+    },
+    {
+      "LogName": "Breakfast items",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_PancakeStack": {
+          "Name": "{{ModId}}_PancakeStack",
+          "DisplayName": "Pancake Stack",
+          "Description": "A tall stack of fluffy pancakes with butter and syrup. Breakfast only at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 75,
+          "Texture": "Mods/{{ModId}}/Breakfast_PancakeStack",
+          "SpriteIndex": 0,
+          "Edibility": 40,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_MorningRush",
+              "Duration": 420,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Speed": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_BaconEggSandwich": {
+          "Name": "{{ModId}}_BaconEggSandwich",
+          "DisplayName": "Bacon & Egg Sandwich",
+          "Description": "Crispy bacon and a fried egg on a toasted bun. Breakfast only at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 85,
+          "Texture": "Mods/{{ModId}}/Breakfast_BaconEggSandwich",
+          "SpriteIndex": 0,
+          "Edibility": 45,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_HeartyStart",
+              "Duration": 420,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Attack": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_BreakfastBurrito": {
+          "Name": "{{ModId}}_BreakfastBurrito",
+          "DisplayName": "Breakfast Burrito",
+          "Description": "Eggs, potatoes and cheese wrapped up warm. Breakfast only at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 95,
+          "Texture": "Mods/{{ModId}}/Breakfast_BreakfastBurrito",
+          "SpriteIndex": 0,
+          "Edibility": 50,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_WrappedUp",
+              "Duration": 420,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Defense": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_HashBrowns": {
+          "Name": "{{ModId}}_HashBrowns",
+          "DisplayName": "Hash Browns",
+          "Description": "Golden, crispy and a little greasy. Breakfast only at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 40,
+          "Texture": "Mods/{{ModId}}/Breakfast_HashBrowns",
+          "SpriteIndex": 0,
+          "Edibility": 20,
+          "IsDrink": false
+        },
+        "{{ModId}}_OrangeJuice": {
+          "Name": "{{ModId}}_OrangeJuice",
+          "DisplayName": "Orange Juice",
+          "Description": "A cold glass of fresh-squeezed orange juice. Breakfast only at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 45,
+          "Texture": "Mods/{{ModId}}/Breakfast_OrangeJuice",
+          "SpriteIndex": 0,
+          "Edibility": 25,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_FreshSqueeze",
+              "Duration": 300,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "MaxStamina": 30
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Breakfast shop (counter menu > Breakfast). The 6 AM-10 AM check is done by the DLL (BreakfastStartTime / BreakfastEndTime in Code/config.json), so the items have no time condition here. Prices match the kiosk list below.",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "Entries": {
+        "{{ModId}}_BentleyBreakfast": {
+          "Items": [
+            {
+              "Id": "{{ModId}}_PancakeStack",
+              "ItemId": "(O){{ModId}}_PancakeStack",
+              "Price": 150,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_BaconEggSandwich",
+              "ItemId": "(O){{ModId}}_BaconEggSandwich",
+              "Price": 170,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_BreakfastBurrito",
+              "ItemId": "(O){{ModId}}_BreakfastBurrito",
+              "Price": 190,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_HashBrowns",
+              "ItemId": "(O){{ModId}}_HashBrowns",
+              "Price": 80,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_OrangeJuice",
+              "ItemId": "(O){{ModId}}_OrangeJuice",
+              "Price": 90,
+              "IgnoreShopPriceModifiers": true
+            }
+          ],
+          "Owners": [
+            {
+              "Id": "{{ModId}}_BentleyAtBreakfast",
+              "Condition": "TIME 600 1800",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_Bentley",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeBentleyBreakfast",
+                  "Dialogue": "Good morning! Breakfast is ready."
+                }
+              ]
+            },
+            {
+              "Id": "{{ModId}}_RobotAtBreakfast",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_RestaurantRobot",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeRobotBreakfast",
+                  "Dialogue": "Greetings, customer. The breakfast menu is available."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Kiosk Food Shop: the 7 main items plus all 5 breakfast items, kiosk prices, breakfast all day",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "Entries": {
+        "{{ModId}}_BentleyMenu": {
+          "Items": [
+            {
+              "Id": "{{ModId}}_Cheeseburger",
+              "ItemId": "(O){{ModId}}_Cheeseburger",
+              "Price": 180,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_FrenchFries",
+              "ItemId": "(O){{ModId}}_FrenchFries",
+              "Price": 90,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_ChickenNuggets",
+              "ItemId": "(O){{ModId}}_ChickenNuggets",
+              "Price": 140,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_Coke",
+              "ItemId": "(O){{ModId}}_Coke",
+              "Price": 100,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_Milkshake",
+              "ItemId": "(O){{ModId}}_Milkshake",
+              "Price": 180,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_Windex",
+              "ItemId": "(O){{ModId}}_Windex",
+              "Price": 25,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_FarmhandSnackPack",
+              "ItemId": "(O){{ModId}}_FarmhandSnackPack",
+              "Price": 220,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_PancakeStack",
+              "ItemId": "(O){{ModId}}_PancakeStack",
+              "Price": 150,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_BaconEggSandwich",
+              "ItemId": "(O){{ModId}}_BaconEggSandwich",
+              "Price": 170,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_BreakfastBurrito",
+              "ItemId": "(O){{ModId}}_BreakfastBurrito",
+              "Price": 190,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_HashBrowns",
+              "ItemId": "(O){{ModId}}_HashBrowns",
+              "Price": 80,
+              "IgnoreShopPriceModifiers": true
+            },
+            {
+              "Id": "{{ModId}}_OrangeJuice",
+              "ItemId": "(O){{ModId}}_OrangeJuice",
+              "Price": 90,
+              "IgnoreShopPriceModifiers": true
+            }
+          ],
+          "Owners": [
+            {
+              "Id": "{{ModId}}_BentleyAtKiosk",
+              "Condition": "TIME 600 1800",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_Bentley",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeBentleyKiosk",
+                  "Dialogue": "Welcome to Bentley's! What can I get you?"
+                }
+              ]
+            },
+            {
+              "Id": "{{ModId}}_RobotAtKiosk",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_RestaurantRobot",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeRobotKiosk",
+                  "Dialogue": "Greetings, customer. I am the Restaurant Robot. Please place your order."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

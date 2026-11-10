@@ -1,0 +1,9 @@
+{
+  "Name": "Bentley's Fast Food (code part)",
+  "Author": "Bentley Playz",
+  "Version": "3.16.2",
+  "Description": "Code part of Bentley Playz Fast Food & Useful Stuff: one DLL with the door locking, Windex damage, update announcement, ordering counter menu, Restaurant Kiosk and Bus Stop guard. Settings are in config.json next to the DLL. Ships inside the same mod folder as the Content part.",
+  "UniqueID": "BentleyPlayz.FastFoodUsefulStuff.Smapi",
+  "EntryDll": "BentleyPlayz.FastFoodUsefulStuff.Smapi.dll",
+  "MinimumApiVersion": "4.1.10"
+}

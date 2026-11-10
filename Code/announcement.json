@@ -1,0 +1,197 @@
+{
+  "_help": "EDIT THIS FILE to change the update announcement - no recompiling needed. The announcement shows once per save, and again every time the mod's version number changes (the Version in manifest.json). Type is 'heading' or 'text'. {farmerName} is replaced by the player's name. Use plain ASCII punctuation only (no long dashes or curly quotes); Stardew's fonts do not all have them.",
+  "Blocks": [
+    {
+      "Type": "heading",
+      "Text": "Welcome, {farmerName}!"
+    },
+    {
+      "Type": "text",
+      "Text": "Thank you for downloading Bentley's Fast Food! Here is everything you can do."
+    },
+    {
+      "Type": "text",
+      "Text": "What is new: the shop pickers at the counter and the kiosk now close with the back button, the X or a tap outside; the kiosk opens when you tap or click its top half; and kiosk deals are now limited to the 3 a day. Also: the counter menu, a seasonal menu, and one single mod file."
+    },
+    {
+      "Type": "heading",
+      "Text": "The Restaurant"
+    },
+    {
+      "Type": "text",
+      "Text": "Bentley's restaurant is on the Bus Stop map and is open 24 hours a day, every day. Tap or click the front door to go in."
+    },
+    {
+      "Type": "text",
+      "Text": "Sit on any chair or booth: tap, click or press the action button on it."
+    },
+    {
+      "Type": "heading",
+      "Text": "Ordering Counter Menu"
+    },
+    {
+      "Type": "text",
+      "Text": "Press the action button on the counter and Bentley asks: What would you like to see? Pick Main Menu, Breakfast, Seasonal or Never mind, and that shop opens."
+    },
+    {
+      "Type": "text",
+      "Text": "Main Menu has the 7 regular items below. Breakfast has the 5 breakfast items. Seasonal has the current season's items."
+    },
+    {
+      "Type": "text",
+      "Text": "Cheeseburger (180g): a big filling meal."
+    },
+    {
+      "Type": "text",
+      "Text": "French Fries (90g): a small snack."
+    },
+    {
+      "Type": "text",
+      "Text": "Chicken Nuggets (140g): a medium meal, sold only here."
+    },
+    {
+      "Type": "text",
+      "Text": "Coke (100g): a drink that gives Speed +1 for a while."
+    },
+    {
+      "Type": "text",
+      "Text": "Milkshake (180g): a drink that gives Defense +1 and Speed +1. Sold only at Bentley's counter, not at Gus's. Bentley also teaches you the recipe at 4 hearts, so you can cook it yourself."
+    },
+    {
+      "Type": "text",
+      "Text": "Farmhand Snack Pack (220g): gives Farming +1 and Mining +1 for a long time."
+    },
+    {
+      "Type": "text",
+      "Text": "Windex (25g): a joke item. It hurts you and makes you dizzy (Speed -1, Luck -1). Please do not drink real window cleaner!"
+    },
+    {
+      "Type": "text",
+      "Text": "Bentley runs the counter from 6 AM to 6 PM. The Restaurant Robot runs it the rest of the time. Gus's Saloon only sells the Cheeseburger, French Fries, Coke, Snack Pack and Windex. Chicken Nuggets, the Milkshake and all the desserts are only at Bentley's."
+    },
+    {
+      "Type": "heading",
+      "Text": "Breakfast (6 AM to 10 AM)"
+    },
+    {
+      "Type": "text",
+      "Text": "Choose Breakfast at the counter from 6 AM to 10 AM: Pancake Stack (150g, Speed +1), Bacon and Egg Sandwich (170g, Attack +1), Breakfast Burrito (190g, Defense +1), Hash Browns (80g) and Orange Juice (90g, more max energy). Outside those hours the counter says: Breakfast is served from 6 AM to 10 AM."
+    },
+    {
+      "Type": "text",
+      "Text": "The Restaurant Kiosk sells breakfast at any hour, so it is the way to get it after 10 AM, and the kiosk deals work on it too. Gus's does not sell breakfast."
+    },
+    {
+      "Type": "heading",
+      "Text": "Seasonal Menu"
+    },
+    {
+      "Type": "text",
+      "Text": "Spring: Berry Lemonade (110g) and Garden Wrap (160g). Summer: Frozen Slushie (120g) and Grilled Corn Cup (130g). Fall: Pumpkin Shake (170g) and Apple Pie Slice (150g). Winter: Hot Cocoa (140g) and Chili Bowl (200g)."
+    },
+    {
+      "Type": "text",
+      "Text": "Only the current season's two items are on sale, at the counter and at the kiosk. Each one gives a small buff."
+    },
+    {
+      "Type": "heading",
+      "Text": "Dessert Corner (left room)"
+    },
+    {
+      "Type": "text",
+      "Text": "Talk to the kiosk from the pink mat. Ice Cream Sundae (200g), Soft Serve Cone (140g, Speed +1), Fudge Brownie (160g), Strawberry Cheesecake (220g, Defense +1), Glazed Donut (120g), Banana Split (260g, Luck +1) and the Windex Swirl Cone (60g, it hurts). Gus's does not sell any desserts. Only Bentley's has them."
+    },
+    {
+      "Type": "heading",
+      "Text": "Restaurant Kiosk (portable)"
+    },
+    {
+      "Type": "text",
+      "Text": "How to get it: reach 2 hearts with Bentley, then walk into the Bus Stop. He shows you the kiosk and teaches you the recipe, and a letter from him arrives the next day."
+    },
+    {
+      "Type": "text",
+      "Text": "Craft it in your crafting menu with 50 Wood, 5 Iron Bars and 3 Refined Quartz."
+    },
+    {
+      "Type": "text",
+      "Text": "Place it anywhere the game lets you place objects, indoors or outdoors. It takes up one tile. Hit it with an axe or pickaxe to pick it up and carry it."
+    },
+    {
+      "Type": "text",
+      "Text": "How to use it: tap, click or press the action button on it, then choose Desserts, Food or Seasonal. The shop opens with the usual prices. You still pay in gold, so it is a supply stop, not free healing."
+    },
+    {
+      "Type": "text",
+      "Text": "Kiosk deals: 10% off, for up to 3 items bought per day. The deals are shared by all of your kiosks and come back every morning. Only the kiosk gives them. The counter, the Dessert Corner and Gus's never do."
+    },
+    {
+      "Type": "heading",
+      "Text": "Arcade (right room)"
+    },
+    {
+      "Type": "text",
+      "Text": "Play Journey of the Prairie King and Junimo Kart."
+    },
+    {
+      "Type": "heading",
+      "Text": "Bentley's Day"
+    },
+    {
+      "Type": "text",
+      "Text": "6:10 AM: Bentley is behind the counter."
+    },
+    {
+      "Type": "text",
+      "Text": "6:00 PM: he walks to Gus's Saloon."
+    },
+    {
+      "Type": "text",
+      "Text": "9:00 PM: he goes home to his bedroom to sleep."
+    },
+    {
+      "Type": "text",
+      "Text": "The Restaurant Robot is in the bedroom until 6 PM, then works the counter for the rest of the day."
+    },
+    {
+      "Type": "text",
+      "Text": "Bentley's birthday is Spring 12. He loves burgers, fries, nuggets, milkshakes and desserts. He does not like Windex."
+    },
+    {
+      "Type": "heading",
+      "Text": "Staff Door"
+    },
+    {
+      "Type": "text",
+      "Text": "Stand in front of the double door behind the kitchen and tap or click it to visit Bentley's bedroom. It is open to everyone."
+    },
+    {
+      "Type": "heading",
+      "Text": "Settings"
+    },
+    {
+      "Type": "text",
+      "Text": "Code/config.json holds every setting, so you never need to recompile: Windex damage (WindexDrinkDamage, WindexSwirlConeDamage), the breakfast hours (BreakfastStartTime, BreakfastEndTime), the kiosk deals (KioskDealsPerDay, KioskDiscountPercent), DevLogging, and the BusStopGuard section. Set damage to 0 for none. Copy your old config into the new Code folder when updating, or type the console command bentley_reload_config to re-read it in game."
+    },
+    {
+      "Type": "heading",
+      "Text": "Compatibility"
+    },
+    {
+      "Type": "text",
+      "Text": "This mod should be compatible with Stardew Valley Expanded."
+    },
+    {
+      "Type": "text",
+      "Text": "Any mod that changes the Bus Stop area may mess with this mod. If the restaurant looks wrong, try removing the other Bus Stop mod."
+    },
+    {
+      "Type": "heading",
+      "Text": "Thank you!"
+    },
+    {
+      "Type": "text",
+      "Text": "Creator: Bentley Playz"
+    }
+  ]
+}

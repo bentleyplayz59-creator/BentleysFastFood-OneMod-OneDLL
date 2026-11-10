@@ -1,0 +1,16 @@
+{
+  "WindexDrinkDamage": 10,
+  "WindexSwirlConeDamage": 10,
+  "BreakfastStartTime": 600,
+  "BreakfastEndTime": 1000,
+  "KioskDealsPerDay": 3,
+  "KioskDiscountPercent": 10,
+  "DevLogging": true,
+  "BusStopGuard": {
+    "Enabled": true,
+    "ClearOncePerDay": true,
+    "CheckIntervalTicks": 60,
+    "MaxRecoveryAttemptsPerDay": 3,
+    "VerboseLogging": false
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "Changes": [
+    {
+      "LogName": "Load Restaurant Kiosk texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Kiosk",
+      "FromFile": "assets/kiosk.png"
+    },
+    {
+      "LogName": "Add Bentley's Restaurant Kiosk (placeable big craftable, indoors and outdoors)",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "{{ModId}}_RestaurantKiosk": {
+          "Name": "{{ModId}}_RestaurantKiosk",
+          "DisplayName": "Bentley's Restaurant Kiosk",
+          "Description": "An ordering kiosk from Bentley's. Right-click it to order from the Food Shop, the Dessert Shop or the Seasonal menu. Three kiosk-only deals a day: 10% off.",
+          "Price": 0,
+          "Fragility": 0,
+          "CanBePlacedOutdoors": true,
+          "CanBePlacedIndoors": true,
+          "IsLamp": false,
+          "Texture": "Mods/{{ModId}}/Kiosk",
+          "SpriteIndex": 0
+        }
+      }
+    },
+    {
+      "LogName": "Add Restaurant Kiosk crafting recipe (learned at 2 hearts with Bentley)",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}_RestaurantKiosk": "388 50 335 5 338 3/Home/{{ModId}}_RestaurantKiosk/true/none/Bentley's Restaurant Kiosk"
+      }
+    },
+    {
+      "LogName": "Letter from Bentley about the kiosk",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "{{ModId}}_KioskLetter": "Dear @,^You have been a good friend to the restaurant, so I wanted you to be the first to hear: I built an ordering kiosk.^It lets you order from the Food Shop, the Dessert Shop and the Seasonal menu without coming to the counter. Place it anywhere you like, right-click it, and choose Desserts, Food or Seasonal.^As a thank-you, each day the kiosk gives you three deals of 10% off.^I put the recipe in your crafting menu (50 Wood, 5 Iron Bars and 3 Refined Quartz), and I included one for you, free of charge.^^Sincerely,^   -Bentley^Owner, Bentley's Fast Food%item bigobject {{ModId}}_RestaurantKiosk %%[#]A new kiosk"
+      }
+    },
+    {
+      "LogName": "Bentley 2-heart event on the Bus Stop: shows off the kiosk and teaches the recipe",
+      "Action": "EditData",
+      "Target": "Data/Events/BusStop",
+      "Entries": {
+        "{{ModId}}_KioskIntro/f {{ModId}}_Bentley 500/t 600 2200": "continue/34 18/farmer 34 21 0 {{ModId}}_Bentley 34 17 2/skippable/pause 600/move {{ModId}}_Bentley 0 2 2/pause 300/emote {{ModId}}_Bentley 16/speak {{ModId}}_Bentley \"@! Perfect timing. I've been working on something, and you're the first to see it.$1\"/pause 400/speak {{ModId}}_Bentley \"Meet Bentley's Restaurant Kiosk. Put it down anywhere, tap it, and pick Desserts, Food or Seasonal. Breakfast is on there all day, too.$0\"/pause 500/speak {{ModId}}_Bentley \"And because you've been such a good friend, the kiosk gives you three deals a day: 10% off, just for you.$1\"/pause 400/action MarkCraftingRecipeKnown Current {{ModId}}_RestaurantKiosk/action AddMail Current {{ModId}}_KioskLetter Tomorrow/message \"Bentley showed you how to craft the Restaurant Kiosk!\"/speak {{ModId}}_Bentley \"The plans are yours now. Wood, iron and a little quartz, that's all it takes. I'll even mail you a free one tomorrow.$5\"/pause 500/end"
+      }
+    },
+    {
+      "LogName": "Kiosk recipe and free kiosk letter the morning after reaching 2 hearts, even if the Bus Stop event never plays or is skipped",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}_KioskRecipeAt2Hearts": {
+          "Id": "{{ModId}}_KioskRecipeAt2Hearts",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_HEARTS Current {{ModId}}_Bentley 2",
+          "Actions": [
+            "MarkCraftingRecipeKnown Current {{ModId}}_RestaurantKiosk"
+          ]
+        },
+        "{{ModId}}_KioskLetterAt2Hearts": {
+          "Id": "{{ModId}}_KioskLetterAt2Hearts",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_HEARTS Current {{ModId}}_Bentley 2, !PLAYER_HAS_MAIL Current {{ModId}}_KioskLetter Any",
+          "Actions": [
+            "AddMail Current {{ModId}}_KioskLetter Now"
+          ]
+        }
+      }
+    }
+  ]
+}

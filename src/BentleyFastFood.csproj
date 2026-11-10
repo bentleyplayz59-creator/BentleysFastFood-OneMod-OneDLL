@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- ONE assembly. The Code manifest (Code/manifest.json) points its EntryDll at this exact name. -->
+    <AssemblyName>BentleyPlayz.FastFoodUsefulStuff.Smapi</AssemblyName>
+    <RootNamespace>BentleyPlayz.FastFoodUsefulStuff.Smapi</RootNamespace>
+    <Version>3.16.2</Version>
+
+    <!-- Stardew Valley 1.6 / SMAPI 4.x run on .NET 6. (The old decompiled project said netcoreapp6.0, which is the same runtime.) -->
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <!-- GitHub Actions / build.sh package the mod themselves, so switch off the NuGet package's own deploy and zip steps. -->
+    <EnableModDeploy>false</EnableModDeploy>
+    <EnableModZip>false</EnableModZip>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Adds the references the code needs: StardewModdingAPI, Stardew Valley, StardewValley.GameData,
+      MonoGame.Framework, xTile, SMAPI.Toolkit.CoreInterfaces. It finds them in the game folder
+      (or the folder given with -p:GamePath="...").
+    -->
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
+  </ItemGroup>
+
+</Project>

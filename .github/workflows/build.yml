@@ -1,0 +1,148 @@
+name: Build Bentley's Fast Food
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PROJECT: src/BentleyFastFood.csproj
+  DLL_NAME: BentleyPlayz.FastFoodUsefulStuff.Smapi.dll
+  # Folder the DLL is built into (project in src/, target framework net6.0, Release).
+  DLL_DIR: src/bin/Release/net6.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the repository source
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Install the required .NET SDK (Stardew Valley 1.6 / SMAPI 4 mods are net6.0)
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+
+      # 3. Install the SMAPI build environment (the game references the code compiles against).
+      #    Taken from the example workflow. If this step cannot be resolved, it is skipped and
+      #    step 4 is used instead; the build in step 6 still fails loudly if no game references are found.
+      - name: Set up SMAPI build environment
+        continue-on-error: true
+        uses: Pathoschild/SMAPI-ModBuildWorkflow/add-build-environment@v1
+
+      # 4. Fallback: if you put the game's reference DLLs in a "lib" folder in the repository
+      #    (Stardew Valley.dll, StardewValley.GameData.dll, StardewModdingAPI.dll, MonoGame.Framework.dll,
+      #    xTile.dll, SMAPI.Toolkit.CoreInterfaces.dll, ...), point the build at it.
+      #    Only do this in a PRIVATE repository: the game files are not yours to publish.
+      - name: Use local game references (optional)
+        shell: bash
+        run: |
+          if [ -f "lib/Stardew Valley.dll" ]; then
+            echo "Found lib/Stardew Valley.dll, using lib/ as the game folder."
+            echo "GAME_ARGS=-p:GamePath=$GITHUB_WORKSPACE/lib" >> "$GITHUB_ENV"
+          else
+            echo "No lib/ folder, relying on the SMAPI build environment from step 3."
+            echo "GAME_ARGS=" >> "$GITHUB_ENV"
+          fi
+
+      # 5. Restore project dependencies (downloads the Pathoschild.Stardew.ModBuildConfig NuGet package)
+      - name: Restore dependencies
+        shell: bash
+        run: dotnet restore "$PROJECT" $GAME_ARGS
+
+      # 6. Compile the integrated source: Fast Food, Kiosk and BusStopGuard become ONE DLL
+      - name: Build integrated project
+        shell: bash
+        run: dotnet build "$PROJECT" -c Release --no-restore $GAME_ARGS
+
+      # 7. Verify that the expected DLL exists, and that the manifest points at it
+      - name: Verify DLL
+        shell: bash
+        run: |
+          test -f "$DLL_DIR/$DLL_NAME"
+          echo "Integrated DLL successfully located: $DLL_DIR/$DLL_NAME"
+
+          ENTRY=$(jq -r '.EntryDll' Code/manifest.json)
+          echo "Code/manifest.json EntryDll: $ENTRY"
+          test "$ENTRY" = "$DLL_NAME"
+
+      # 8. Check that every JSON file in the repository parses (a typo here breaks the mod in game)
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          find Code Content -name "*.json" -print0 | while IFS= read -r -d '' f; do
+            jq empty "$f" || { echo "Invalid JSON: $f"; exit 1; }
+          done
+          echo "All JSON files are valid."
+
+      # 9. Prepare the mod folder
+      #    Code/    = the SMAPI part: manifest.json, config.json, announcement.json and the ONE DLL
+      #    Content/ = the Content Patcher part: manifest.json, content.json, data, assets
+      #    (two manifests are required by SMAPI: a Content Patcher pack and a code mod cannot share one)
+      - name: Prepare mod package
+        shell: bash
+        run: |
+          mkdir -p release/BentleysFastFood/Code
+
+          cp Code/manifest.json Code/config.json Code/announcement.json release/BentleysFastFood/Code/
+
+          cp "$DLL_DIR/$DLL_NAME" release/BentleysFastFood/Code/
+
+          cp -r Content release/BentleysFastFood/Content
+
+          # Development-only files (original map copies and the python art scripts) are not part of the mod.
+          rm -rf release/BentleysFastFood/Content/source
+
+      # 10. Verify the package contents
+      - name: Verify package contents
+        shell: bash
+        run: |
+          DLL_COUNT=$(find release/BentleysFastFood -type f -name "*.dll" | wc -l)
+          echo "DLL count: $DLL_COUNT"
+          test "$DLL_COUNT" -eq 1
+
+          test -f "release/BentleysFastFood/Code/$DLL_NAME"
+          test -f release/BentleysFastFood/Code/manifest.json
+          test -f release/BentleysFastFood/Content/manifest.json
+          test -f release/BentleysFastFood/Content/content.json
+          test -d release/BentleysFastFood/Content/assets
+
+          # Exactly one manifest may declare a DLL (the old BusStopGuard / Kiosk manifests must be gone).
+          ENTRY_COUNT=$(find release/BentleysFastFood -name manifest.json -exec jq -r 'select(.EntryDll != null) | .EntryDll' {} \; | wc -l)
+          echo "Manifests with an EntryDll: $ENTRY_COUNT"
+          test "$ENTRY_COUNT" -eq 1
+
+          # No old standalone DLLs, no build leftovers.
+          LEFTOVERS=$(find release/BentleysFastFood \( -name "*Kiosk*.dll" -o -name "*BusStopGuard*.dll" -o -name "*.pdb" -o -name "obj" -o -name "bin" \))
+          if [ -n "$LEFTOVERS" ]; then
+            echo "Unwanted files in the package:"
+            echo "$LEFTOVERS"
+            exit 1
+          fi
+
+          echo "Package contents are correct."
+
+      # 11. Create the downloadable ZIP
+      - name: Create ZIP
+        shell: bash
+        run: |
+          cd release
+          zip -r BentleysFastFood.zip BentleysFastFood
+
+      # 12. Upload the finished artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BentleysFastFood
+          path: release/BentleysFastFood.zip
+          if-no-files-found: error

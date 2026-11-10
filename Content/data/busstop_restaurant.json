@@ -1,0 +1,949 @@
+{
+ "Changes": [
+  {
+   "LogName": "[BusStop] Load restaurant building tiles on the lawn (tiles 30-37 x 10-16)",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "FromFile": "assets/maps/ForestRestaurant.tmx",
+   "ToArea": {
+    "X": 30,
+    "Y": 10,
+    "Width": 8,
+    "Height": 7
+   },
+   "PatchMode": "ReplaceByLayer"
+  },
+  {
+   "LogName": "[BusStop] Door step art",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "FromFile": "assets/maps/ForestDoorStep.tmx",
+   "ToArea": {
+    "X": 33,
+    "Y": 16,
+    "Width": 2,
+    "Height": 1
+   },
+   "PatchMode": "Overlay"
+  },
+  {
+   "LogName": "[BusStop] Poster marker (no pop-up). The Bus Stop guard DLL checks tile 37,15 for an Action containing \"Bentley's Fast Food\" to confirm the restaurant is in place, and removes the trees and bushes on the lawn only when that check passes. The action is 'None' so interacting with the tile shows nothing.",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 37,
+      "Y": 15
+     },
+     "Layer": "Buildings",
+     "SetProperties": {
+      "Action": "None Bentley's Fast Food"
+     }
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] Front door warps",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 33,
+      "Y": 15
+     },
+     "Layer": "Buildings",
+     "SetProperties": {
+      "Action": "Warp 15 12 {{ModId}}_BentleysRestaurant"
+     }
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 15
+     },
+     "Layer": "Buildings",
+     "SetProperties": {
+      "Action": "Warp 15 12 {{ModId}}_BentleysRestaurant"
+     }
+    }
+   ]
+  },
+  {
+   "LogName": "Restaurant exit leads to the Bus Stop, just below the door",
+   "Action": "EditMap",
+   "Target": "Maps/{{ModId}}_FastFoodInterior",
+   "MapProperties": {
+    "Warp": "15 13 BusStop 33 17 16 13 BusStop 34 17"
+   }
+  },
+  {
+   "LogName": "[BusStop] 3.13.8: open a gap in the fence in front of the restaurant (tiles 30-37, rows 19-21; the exact fence row is not known without the vanilla map, so all three rows are cleared on Buildings and Front; empty tiles are ignored)",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 30,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 19
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 19
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 20
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 21
+     },
+     "Layer": "Front",
+     "Remove": true
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] 3.13.9: dirt path, 2 tiles wide (x 33-34), from the door step down through the fence gap to the road (rows 17-22). Uses plain dirt tiles of the spring outdoors sheet (153, 176, 226, 227, 433, 587), mixed so it does not look tiled. SetIndex only, so each tile keeps the sheet it already has.",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 33,
+      "Y": 17
+     },
+     "Layer": "Back",
+     "SetIndex": 227
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 17
+     },
+     "Layer": "Back",
+     "SetIndex": 153
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 18
+     },
+     "Layer": "Back",
+     "SetIndex": 226
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 18
+     },
+     "Layer": "Back",
+     "SetIndex": 176
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 19
+     },
+     "Layer": "Back",
+     "SetIndex": 433
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 19
+     },
+     "Layer": "Back",
+     "SetIndex": 587
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 227
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 153
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 226
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 176
+    },
+    {
+     "Position": {
+      "X": 33,
+      "Y": 22
+     },
+     "Layer": "Back",
+     "SetIndex": 433
+    },
+    {
+     "Position": {
+      "X": 34,
+      "Y": 22
+     },
+     "Layer": "Back",
+     "SetIndex": 587
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] 3.13.10: remove the four loose fence pieces (x26-29) and the short fence stub just right of the path (x38-39, row 21 Buildings + row 20 Front). The long fence from x40 eastward, the vertical garden fence, the left fence and corner, and the lower fence all stay.",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 26,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 26,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 27,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 27,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 28,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 28,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 29,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 29,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 38,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 38,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 39,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "Remove": true
+    },
+    {
+     "Position": {
+      "X": 39,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "Remove": true
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] 3.13.10: remove the dark shadow band and blob around the old fence gap (x26-38, rows 17-21) by replacing the dark grass tiles with plain grass of the same spring outdoors sheet. The path tiles (x33-34) are not touched.",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 29,
+      "Y": 17
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 17
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 38,
+      "Y": 17
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 18
+     },
+     "Layer": "Back",
+     "SetIndex": 150
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 18
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 19
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 19
+     },
+     "Layer": "Back",
+     "SetIndex": 151
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 19
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 26,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 27,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 28,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 29,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 150
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 151
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 20
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 26,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 27,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 28,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 150
+    },
+    {
+     "Position": {
+      "X": 29,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 30,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 31,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 151
+    },
+    {
+     "Position": {
+      "X": 32,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 35,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 36,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 37,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 175
+    },
+    {
+     "Position": {
+      "X": 38,
+      "Y": 21
+     },
+     "Layer": "Back",
+     "SetIndex": 150
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] 3.13.11: fix the fence corner at the bottom of the vertical garden fence (tile 40,21). The old corner tile still drew a rail pointing left, which stuck out into the lawn after the stub at x38-39 was removed. It becomes the plain left end cap of the long fence (outdoors sheet 383 on Buildings, 358 on Front), so the rails only run to the right.",
+   "Action": "EditMap",
+   "Target": "Maps/BusStop",
+   "MapTiles": [
+    {
+     "Position": {
+      "X": 40,
+      "Y": 21
+     },
+     "Layer": "Buildings",
+     "SetIndex": 383
+    },
+    {
+     "Position": {
+      "X": 40,
+      "Y": 20
+     },
+     "Layer": "Front",
+     "SetIndex": 358
+    }
+   ]
+  },
+  {
+   "LogName": "[BusStop] 3.13.13: add Bentley's Fast Food to the direction sign at tile 21,22 (vanilla string BusStop.1 is '` Bus Stop^> Pelican Town'; the game draws ` as an up arrow and > as a right arrow). Appends one line with a right arrow and leaves the vanilla lines untouched.",
+   "Action": "EditData",
+   "Target": "Strings/StringsFromMaps",
+   "TextOperations": [
+    {
+     "Operation": "Append",
+     "Target": [
+      "Entries",
+      "BusStop.1"
+     ],
+     "Value": "> Bentley's Fast Food",
+     "Delimiter": "^"
+    }
+   ]
+  }
+ ]
+}

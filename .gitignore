@@ -1,0 +1,20 @@
+# Build output
+bin/
+obj/
+release/
+*.zip
+
+# IDE / OS
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Game files are not yours to publish: keep the optional lib/ folder out of a public repo
+lib/
+
+# Local test config
+*.local.json

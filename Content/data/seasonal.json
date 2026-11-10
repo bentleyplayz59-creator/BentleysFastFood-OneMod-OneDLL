@@ -1,0 +1,327 @@
+{
+  "Changes": [
+    {
+      "LogName": "Load Berry Lemonade texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_SpringBerryLemonade",
+      "FromFile": "assets/seasonal/berrylemonade.png"
+    },
+    {
+      "LogName": "Load Garden Wrap texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_SpringGardenWrap",
+      "FromFile": "assets/seasonal/gardenwrap.png"
+    },
+    {
+      "LogName": "Load Frozen Slushie texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_SummerSlushie",
+      "FromFile": "assets/seasonal/slushie.png"
+    },
+    {
+      "LogName": "Load Grilled Corn Cup texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_SummerCornCup",
+      "FromFile": "assets/seasonal/corncup.png"
+    },
+    {
+      "LogName": "Load Pumpkin Shake texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_FallPumpkinShake",
+      "FromFile": "assets/seasonal/pumpkinshake.png"
+    },
+    {
+      "LogName": "Load Apple Pie Slice texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_FallApplePie",
+      "FromFile": "assets/seasonal/applepie.png"
+    },
+    {
+      "LogName": "Load Hot Cocoa texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_WinterHotCocoa",
+      "FromFile": "assets/seasonal/hotcocoa.png"
+    },
+    {
+      "LogName": "Load Chili Bowl texture",
+      "Action": "Load",
+      "Target": "Mods/{{ModId}}/Seasonal_WinterChiliBowl",
+      "FromFile": "assets/seasonal/chilibowl.png"
+    },
+    {
+      "LogName": "Seasonal items (2 per season)",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_SpringBerryLemonade": {
+          "Name": "{{ModId}}_SpringBerryLemonade",
+          "DisplayName": "Berry Lemonade",
+          "Description": "Tart berries and fresh lemon over ice. Spring special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 55,
+          "Texture": "Mods/{{ModId}}/Seasonal_SpringBerryLemonade",
+          "SpriteIndex": 0,
+          "Edibility": 20,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_SpringFizz",
+              "Duration": 240,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Speed": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_SpringGardenWrap": {
+          "Name": "{{ModId}}_SpringGardenWrap",
+          "DisplayName": "Garden Wrap",
+          "Description": "Crisp greens and tomato in a soft wrap. Spring special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 80,
+          "Texture": "Mods/{{ModId}}/Seasonal_SpringGardenWrap",
+          "SpriteIndex": 0,
+          "Edibility": 35,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_FreshHarvest",
+              "Duration": 300,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "FarmingLevel": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_SummerSlushie": {
+          "Name": "{{ModId}}_SummerSlushie",
+          "DisplayName": "Frozen Slushie",
+          "Description": "An icy blue slush that fights the heat. Summer special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 60,
+          "Texture": "Mods/{{ModId}}/Seasonal_SummerSlushie",
+          "SpriteIndex": 0,
+          "Edibility": 20,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_BrainFreeze",
+              "Duration": 300,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "FishingLevel": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_SummerCornCup": {
+          "Name": "{{ModId}}_SummerCornCup",
+          "DisplayName": "Grilled Corn Cup",
+          "Description": "Sweet grilled corn in a cup. Summer special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 65,
+          "Texture": "Mods/{{ModId}}/Seasonal_SummerCornCup",
+          "SpriteIndex": 0,
+          "Edibility": 30,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_SunnySide",
+              "Duration": 300,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Defense": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_FallPumpkinShake": {
+          "Name": "{{ModId}}_FallPumpkinShake",
+          "DisplayName": "Pumpkin Shake",
+          "Description": "Creamy pumpkin shake with a dash of cinnamon. Fall special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 85,
+          "Texture": "Mods/{{ModId}}/Seasonal_FallPumpkinShake",
+          "SpriteIndex": 0,
+          "Edibility": 35,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_PumpkinCozy",
+              "Duration": 300,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "MaxStamina": 30
+              }
+            }
+          ]
+        },
+        "{{ModId}}_FallApplePie": {
+          "Name": "{{ModId}}_FallApplePie",
+          "DisplayName": "Apple Pie Slice",
+          "Description": "A warm slice of apple pie. Fall special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 75,
+          "Texture": "Mods/{{ModId}}/Seasonal_FallApplePie",
+          "SpriteIndex": 0,
+          "Edibility": 40,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_PieStrength",
+              "Duration": 360,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Attack": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_WinterHotCocoa": {
+          "Name": "{{ModId}}_WinterHotCocoa",
+          "DisplayName": "Hot Cocoa",
+          "Description": "Hot cocoa with marshmallows. Winter special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 70,
+          "Texture": "Mods/{{ModId}}/Seasonal_WinterHotCocoa",
+          "SpriteIndex": 0,
+          "Edibility": 30,
+          "IsDrink": true,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_CocoaWarm",
+              "Duration": 360,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "Defense": 1
+              }
+            }
+          ]
+        },
+        "{{ModId}}_WinterChiliBowl": {
+          "Name": "{{ModId}}_WinterChiliBowl",
+          "DisplayName": "Chili Bowl",
+          "Description": "A steaming bowl of chili for cold days. Winter special at Bentley's counter.",
+          "Type": "Cooking",
+          "Category": -7,
+          "Price": 100,
+          "Texture": "Mods/{{ModId}}/Seasonal_WinterChiliBowl",
+          "SpriteIndex": 0,
+          "Edibility": 50,
+          "IsDrink": false,
+          "Buffs": [
+            {
+              "Id": "{{ModId}}_ChiliHeat",
+              "Duration": 360,
+              "IsDebuff": false,
+              "CustomAttributes": {
+                "MiningLevel": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Seasonal shop (counter menu > Seasonal, and the kiosk). Each item has a SEASON condition, so only the current season's items are listed. To add an item, add an entry here with the season it belongs to.",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "Entries": {
+        "{{ModId}}_BentleySeasonal": {
+          "Items": [
+            {
+              "Id": "{{ModId}}_SpringBerryLemonade",
+              "ItemId": "(O){{ModId}}_SpringBerryLemonade",
+              "Price": 110,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Spring"
+            },
+            {
+              "Id": "{{ModId}}_SpringGardenWrap",
+              "ItemId": "(O){{ModId}}_SpringGardenWrap",
+              "Price": 160,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Spring"
+            },
+            {
+              "Id": "{{ModId}}_SummerSlushie",
+              "ItemId": "(O){{ModId}}_SummerSlushie",
+              "Price": 120,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Summer"
+            },
+            {
+              "Id": "{{ModId}}_SummerCornCup",
+              "ItemId": "(O){{ModId}}_SummerCornCup",
+              "Price": 130,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Summer"
+            },
+            {
+              "Id": "{{ModId}}_FallPumpkinShake",
+              "ItemId": "(O){{ModId}}_FallPumpkinShake",
+              "Price": 170,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Fall"
+            },
+            {
+              "Id": "{{ModId}}_FallApplePie",
+              "ItemId": "(O){{ModId}}_FallApplePie",
+              "Price": 150,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Fall"
+            },
+            {
+              "Id": "{{ModId}}_WinterHotCocoa",
+              "ItemId": "(O){{ModId}}_WinterHotCocoa",
+              "Price": 140,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Winter"
+            },
+            {
+              "Id": "{{ModId}}_WinterChiliBowl",
+              "ItemId": "(O){{ModId}}_WinterChiliBowl",
+              "Price": 200,
+              "IgnoreShopPriceModifiers": true,
+              "Condition": "SEASON Winter"
+            }
+          ],
+          "Owners": [
+            {
+              "Id": "{{ModId}}_BentleyAtSeasonal",
+              "Condition": "TIME 600 1800",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_Bentley",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeBentleySeasonal",
+                  "Dialogue": "Fresh off the seasonal menu. Try something new!"
+                }
+              ]
+            },
+            {
+              "Id": "{{ModId}}_RobotAtSeasonal",
+              "Name": "AnyOrNone",
+              "Portrait": "Portraits/{{ModId}}_RestaurantRobot",
+              "Dialogues": [
+                {
+                  "Id": "{{ModId}}_WelcomeRobotSeasonal",
+                  "Dialogue": "Greetings, customer. The seasonal menu is available."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
