@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.16.4
+- FIX (kiosk prices STILL went to 5 gold, real cause): the game edits a shop entry in place, so the kiosk's "original price" and the shop's live price were the same object. Every tick the kiosk's lock check saw a price that did not match "90% of the original", set it to 90% of the (already discounted) price, and that changed the original too, so prices fell 10% per tick until they hit 5 (the log showed the 7 dessert prices 200/140/160/220/120/260/60 going to 5 one after another). The kiosk now keeps the original price and stock as plain numbers (OriginalEntry) that nothing else can change, so a price is always exactly original x 0.9.
+- FIX (softlock next to the kiosk): the kiosk swallowed presses and re-opened its picker on every tap/press while the player stood facing it, so you could not walk away on a phone. Now: no press is handled while the player is moving; a mouse click or touch must really be ON the kiosk (the facing tile only counts for a keyboard/controller action key); after the picker closes the kiosk ignores presses for 0.75 s without swallowing them, and if the picker is cancelled again and again the pause grows to 5 s and then 10 s. The log now says which button opened the kiosk and when the picker closed.
+- Not built or tested in game.
+
 ## 3.16.3
 - FIX (kiosk prices all dropped to 5 gold): when the shop rebuilt its item list, the kiosk re-recorded the entries' CURRENT (already discounted) prices as the "original" and took 10% off again, every time, until every item bottomed out at 5 gold (5 -> 4.5 rounds back to 5). The kiosk now remembers the first full price it saw for each item id and always discounts from that, so the price is exactly original x 0.9 (rounded) no matter how often the shop rebuilds. Units bought are also now tracked by item id so a rebuild no longer forgets them.
 - Not built or tested in game.

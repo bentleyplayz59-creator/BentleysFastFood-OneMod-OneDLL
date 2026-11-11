@@ -36,13 +36,25 @@ internal sealed class KioskService
     private const string AnswerSeasonal = "Seasonal";
     private const string AnswerCancel = "Esc";
 
+    /// <summary>
+    /// A plain-number copy of a shop entry as it was at full price. The game's ItemStockInformation is edited IN PLACE
+    /// (the shop and our "original" pointed at the same object), so the old code saw its own discounted price as the
+    /// original and discounted it again every tick, down to 5 gold. These numbers can never change by accident.
+    /// </summary>
+    private struct OriginalEntry
+    {
+        public int Price;
+        public int Stock;
+        public ItemStockInformation Info; // only used to put a sold-out entry back
+    }
+
     /// <summary>What the kiosk remembers about the one shop window that is open right now.</summary>
     private sealed class DealSession
     {
         public ShopMenu Shop = null!;
 
         /// <summary>Every discounted entry exactly as the shop had it when it opened (full price, original stock).</summary>
-        public readonly Dictionary<ISalable, ItemStockInformation> Original = new Dictionary<ISalable, ItemStockInformation>();
+        public readonly Dictionary<ISalable, OriginalEntry> Original = new Dictionary<ISalable, OriginalEntry>();
 
         /// <summary>The stock number the shop last had for each entry (what we set, or what the game counted down to).</summary>
         public readonly Dictionary<ISalable, int> LastStock = new Dictionary<ISalable, int>();
@@ -54,7 +66,7 @@ internal sealed class KioskService
         /// The FULL-price entry for each item id, recorded the first time the shop showed it. A rebuilt shop list
         /// can still hold entries we already discounted; this makes sure a discount is never taken off a discounted price.
         /// </summary>
-        public readonly Dictionary<string, ItemStockInformation> OriginalById = new Dictionary<string, ItemStockInformation>();
+        public readonly Dictionary<string, OriginalEntry> OriginalById = new Dictionary<string, OriginalEntry>();
 
         /// <summary>Units bought of each item id during this visit (by id, so it survives the shop rebuilding its list).</summary>
         public readonly Dictionary<string, int> Bought = new Dictionary<string, int>();
@@ -62,6 +74,12 @@ internal sealed class KioskService
 
     private readonly ModContext context;
     private int lastOpenTick = -100;
+
+    /// <summary>No new kiosk picker before this tick (set after the picker closes, longer if it keeps being cancelled).</summary>
+    private int blockedUntilTick = -1;
+    private bool pickerWasOpen;
+    private int lastCancelTick = -100000;
+    private int cancelStreak;
     private DealSession? session;
 
     public KioskService(ModContext context)
@@ -87,6 +105,15 @@ internal sealed class KioskService
         if ((!e.Button.IsActionButton() && e.Button != SButton.MouseLeft) || !Context.IsWorldReady || !Context.IsPlayerFree)
             return;
 
+        // Walking away must never open the kiosk: ignore every press while the player is moving.
+        if (Game1.player.isMoving())
+            return;
+
+        // Right after the picker closed (or while it keeps being cancelled) do nothing and do not swallow the press,
+        // so the player can simply walk away.
+        if (Game1.ticks < this.blockedUntilTick)
+            return;
+
         GameLocation? location = Game1.currentLocation;
         if (location == null)
             return;
@@ -106,17 +133,18 @@ internal sealed class KioskService
             return;
         }
 
-        this.context.Helper.Input.Suppress(e.Button);
-
         // The same press can arrive twice (click + tap); open only once.
         if (Game1.ticks - this.lastOpenTick < OpenCooldownTicks)
         {
+            this.context.Helper.Input.Suppress(e.Button);
             DevLog.Say("kiosk press ignored (same press arrived twice)");
             return;
         }
+
+        this.context.Helper.Input.Suppress(e.Button);
         this.lastOpenTick = Game1.ticks;
 
-        DevLog.Say("kiosk used at tile ", (int)tile.X + "," + (int)tile.Y);
+        DevLog.Say("kiosk used at tile " + (int)tile.X + "," + (int)tile.Y + " button=" + e.Button);
 
         List<KeyValuePair<string, string>> choices = new List<KeyValuePair<string, string>>
         {
@@ -137,7 +165,10 @@ internal sealed class KioskService
     private Vector2? FindKioskTile(GameLocation location, ButtonPressedEventArgs e)
     {
         List<Vector2> candidates = new List<Vector2> { e.Cursor.GrabTile, e.Cursor.Tile };
-        if (e.Button.IsActionButton())
+        // The tile the player faces only counts for a keyboard / controller action key. A mouse click or a touch must
+        // really be on the kiosk, otherwise every tap next to it (walking away on a phone) opened the picker.
+        bool mouseOrTouch = e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight || e.Button == SButton.MouseMiddle;
+        if (e.Button.IsActionButton() && !mouseOrTouch)
             candidates.Add(this.FacingTile());
 
         foreach (Vector2 candidate in candidates)
@@ -267,7 +298,7 @@ internal sealed class KioskService
         this.session = newSession;
         this.ApplyLimits(newSession, dealsLeft);
 
-        foreach (KeyValuePair<ISalable, ItemStockInformation> entry in newSession.Original)
+        foreach (KeyValuePair<ISalable, OriginalEntry> entry in newSession.Original)
         {
             if (newSession.Shop.itemPriceAndStock.TryGetValue(entry.Key, out ItemStockInformation now))
                 DevLog.Say("kiosk entry " + entry.Key.Name + ": price " + entry.Value.Price + " -> " + now.Price + ", stock " + (entry.Value.Stock == int.MaxValue ? "unlimited" : entry.Value.Stock.ToString()) + " -> " + now.Stock);
@@ -292,20 +323,21 @@ internal sealed class KioskService
             if (info.TradeItem != null || info.Price <= 0)
                 continue;
 
-            // 3.16.3: never treat a price we already discounted as the original (that compounded 10% off over and
-            // over until every item cost 5 gold). The first full-price entry seen for an item id is the original.
+            // Never treat a price we already discounted as the original: the first full price seen for an item id wins,
+            // and it is kept as plain numbers (see OriginalEntry).
             string id = item.QualifiedItemId;
-            if (s.OriginalById.TryGetValue(id, out ItemStockInformation firstSeen))
+            if (!s.OriginalById.TryGetValue(id, out OriginalEntry entry))
             {
-                info.Price = firstSeen.Price;
-                info.Stock = firstSeen.Stock; // remaining stock is worked out from Bought by id
+                entry = new OriginalEntry { Price = info.Price, Stock = info.Stock, Info = info };
+                s.OriginalById[id] = entry;
             }
             else
             {
-                s.OriginalById[id] = info;
+                entry.Info = info;
+                s.OriginalById[id] = entry;
             }
 
-            s.Original[item] = info;
+            s.Original[item] = entry;
         }
     }
 
@@ -319,7 +351,7 @@ internal sealed class KioskService
         if (left <= 0)
             return;
 
-        foreach (KeyValuePair<ISalable, ItemStockInformation> entry in s.Original)
+        foreach (KeyValuePair<ISalable, OriginalEntry> entry in s.Original)
         {
             if (!s.Shop.itemPriceAndStock.TryGetValue(entry.Key, out ItemStockInformation info))
                 continue;
@@ -340,6 +372,8 @@ internal sealed class KioskService
     /// <summary>Called every tick by ModEntry. Counts what was bought and keeps the limits up to date.</summary>
     public void OnUpdateTicked()
     {
+        this.TrackPicker();
+
         DealSession? current = this.session;
         if (current == null)
             return;
@@ -357,6 +391,33 @@ internal sealed class KioskService
             this.session = null;
             this.context.Monitor.Log($"Could not update kiosk deals: {ex}", LogLevel.Error);
         }
+    }
+
+    /// <summary>Notices when the Desserts/Food/Seasonal picker closes and blocks a re-open for a moment (longer if it is cancelled again and again).</summary>
+    private void TrackPicker()
+    {
+        bool open = Game1.activeClickableMenu is ChoiceMenu;
+        if (this.pickerWasOpen && !open)
+        {
+            bool cancelled = Game1.activeClickableMenu == null;
+            int block = 45; // 0.75 s
+
+            if (cancelled)
+            {
+                this.cancelStreak = Game1.ticks - this.lastCancelTick < 600 ? this.cancelStreak + 1 : 1;
+                this.lastCancelTick = Game1.ticks;
+                block = this.cancelStreak <= 1 ? 45 : (this.cancelStreak == 2 ? 300 : 600);
+            }
+            else
+            {
+                this.cancelStreak = 0;
+            }
+
+            this.blockedUntilTick = Game1.ticks + block;
+            DevLog.Say("kiosk picker closed, cancelled = " + cancelled + ", ignoring kiosk presses for " + block + " ticks");
+        }
+
+        this.pickerWasOpen = open;
     }
 
     private void Poll(DealSession s)
@@ -448,7 +509,7 @@ internal sealed class KioskService
     /// <summary>Discounted price and "at most <paramref name="left"/> in stock" for every entry that is still in the shop.</summary>
     private void ApplyLimits(DealSession s, int left)
     {
-        foreach (KeyValuePair<ISalable, ItemStockInformation> entry in s.Original)
+        foreach (KeyValuePair<ISalable, OriginalEntry> entry in s.Original)
         {
             ISalable item = entry.Key;
             if (!s.Shop.itemPriceAndStock.TryGetValue(item, out ItemStockInformation info))
@@ -467,14 +528,15 @@ internal sealed class KioskService
     {
         bool addedBack = false;
 
-        foreach (KeyValuePair<ISalable, ItemStockInformation> entry in s.Original)
+        foreach (KeyValuePair<ISalable, OriginalEntry> entry in s.Original)
         {
             ISalable item = entry.Key;
             int remaining = this.RemainingOriginalStock(s, item);
             if (remaining <= 0)
                 continue; // really sold out in the shop's own stock, stays gone
 
-            ItemStockInformation restored = entry.Value;
+            ItemStockInformation restored = entry.Value.Info;
+            restored.Price = entry.Value.Price;
             restored.Stock = remaining;
 
             if (s.Shop.itemPriceAndStock.ContainsKey(item))
