@@ -10,6 +10,10 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Network;
 
+// The game's shop stock lookups (TryGetValue on itemPriceAndStock) trigger CS8600 nullable warnings. The code only reads the
+// values when the lookup succeeds, so they are harmless; silenced here to keep the build log clean.
+#pragma warning disable CS8600
+
 namespace BentleyPlayz.FastFoodUsefulStuff.Smapi.Kiosk;
 
 /// <summary>
