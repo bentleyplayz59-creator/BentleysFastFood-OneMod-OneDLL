@@ -9,7 +9,7 @@ namespace BentleyPlayz.FastFoodUsefulStuff.Smapi.FastFood;
 
 /// <summary>
 /// The ordering counter (tiles 14-18, row 5 of the restaurant). Pressing the action button asks
-/// "What would you like to see?" and opens Main Menu, Breakfast or Seasonal.
+/// "What would you like to order?" and opens Main Menu, Breakfast or Seasonal.
 /// The counter tiles carry the tile action <see cref="ModContext.CounterMenuAction"/> (set in Content/data/shop.json).
 /// </summary>
 internal sealed class CounterMenuService
@@ -47,7 +47,7 @@ internal sealed class CounterMenuService
         };
 
         // ChoiceMenu (not the vanilla question box) so the back button, the X and a tap outside always close it.
-        ChoiceMenu.Show("What would you like to see?", choices, answer => this.OnAnswer(Game1.player, answer));
+        ChoiceMenu.Show("What would you like to order?", choices, answer => this.OnAnswer(Game1.player, answer));
         return true;
     }
 

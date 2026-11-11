@@ -14,7 +14,7 @@ namespace BentleyPlayz.FastFoodUsefulStuff.Smapi.Kiosk;
 
 /// <summary>
 /// Bentley's Restaurant Kiosk (the placeable big craftable).
-/// Action button on a placed kiosk -> "Desserts, Food or Seasonal?" -> opens that shop with kiosk-only
+/// Action button on a placed kiosk -> "What would you like to order?" -> opens that shop with kiosk-only
 /// deals (default: 10% off, 3 purchased units per day per player).
 /// Ported from the decompiled source of the old Kiosk DLL (3.14.0). Behaviour, item ID, shop IDs and the
 /// save-data key/format are unchanged; the only additions are the Seasonal choice and the config values.
@@ -156,7 +156,7 @@ internal sealed class KioskService
             new KeyValuePair<string, string>(AnswerSeasonal, "Seasonal"),
             new KeyValuePair<string, string>(AnswerCancel, "Cancel")
         };
-        ChoiceMenu.Show("Desserts, Food or Seasonal?", choices, answer => this.OnChoice(Game1.player, answer));
+        ChoiceMenu.Show("What would you like to order?", choices, answer => this.OnChoice(Game1.player, answer));
     }
 
     /// <summary>

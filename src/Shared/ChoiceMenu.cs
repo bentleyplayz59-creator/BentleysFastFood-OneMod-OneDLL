@@ -261,7 +261,10 @@ internal sealed class ChoiceMenu : IClickableMenu
     public override void draw(SpriteBatch b)
     {
         // Same look as the game's own question box: the dialogue frame, left-aligned text, pale highlight on the chosen line.
-        Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height, false, true);
+        // Dim the map behind the box so the title is readable, then draw the frame at exactly our own coordinates
+        // (drawDialogueBox placed the frame lower than the title on some devices, leaving the title floating over the map).
+        b.Draw(Game1.fadeToBlackRect, new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
+        IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height, Color.White, 1f, true, -1f);
 
         int textY = base.yPositionOnScreen + 28;
         foreach (string line in titleLines)

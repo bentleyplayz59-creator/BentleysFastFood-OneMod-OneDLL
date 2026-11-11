@@ -5,7 +5,7 @@ A Stardew Valley 1.6 mod (SMAPI 4.x + Content Patcher) that adds **Bentley's Fas
 ## What the mod does
 
 - **Restaurant** on the Bus Stop, open 24 hours a day, with seating, a dessert corner (left room) and an arcade (right room, Journey of the Prairie King and Junimo Kart).
-- **Ordering counter menu**: press the action button on the counter (tiles 14–18, row 5) and Bentley asks *"What would you like to see?"* — **Main Menu**, **Breakfast**, **Seasonal** or **Never mind**.
+- **Ordering counter menu**: press the action button on the counter (tiles 14–18, row 5) and Bentley asks *"What would you like to order?"* — **Main Menu**, **Breakfast**, **Seasonal** or **Never mind**.
   - **Main Menu**: the 7 regular items (Cheeseburger, French Fries, Chicken Nuggets, Coke, Milkshake, Windex, Farmhand Snack Pack).
   - **Breakfast**: the 5 breakfast items. Outside 6–10 AM the counter says *"Breakfast is served from 6 AM to 10 AM."*
   - **Seasonal**: only the current season's items (2 per season, 8 in total).
