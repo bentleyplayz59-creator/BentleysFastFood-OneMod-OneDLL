@@ -68,6 +68,9 @@ internal sealed class KioskService
         /// </summary>
         public readonly Dictionary<string, OriginalEntry> OriginalById = new Dictionary<string, OriginalEntry>();
 
+        /// <summary>How many of each kiosk item the player had (bag + the item held on the cursor) at the last look. Purchases are counted from this, not from shop stock.</summary>
+        public Dictionary<string, int> BagBaseline = new Dictionary<string, int>();
+
         /// <summary>Units bought of each item id during this visit (by id, so it survives the shop rebuilding its list).</summary>
         public readonly Dictionary<string, int> Bought = new Dictionary<string, int>();
     }
@@ -295,6 +298,7 @@ internal sealed class KioskService
         if (newSession.Original.Count == 0)
             return;
 
+        newSession.BagBaseline = this.CountBag(newSession);
         this.session = newSession;
         this.ApplyLimits(newSession, dealsLeft);
 
@@ -430,14 +434,14 @@ internal sealed class KioskService
 
             DevLog.Say("kiosk: the shop rebuilt its list, locking the stock again");
             this.Snapshot(s);
+            s.BagBaseline = this.CountBag(s);
             int dealsNow = this.DealsLeft();
             if (dealsNow > 0)
                 this.ApplyLimits(s, dealsNow);
             return;
         }
 
-        // How many units of each entry were sold since the last look.
-        List<KeyValuePair<ISalable, int>> sold = new List<KeyValuePair<ISalable, int>>();
+        // Keep the stock tracker in step with what the shop shows (used by the lock check and the caps).
         foreach (ISalable item in s.Original.Keys.ToList())
         {
             if (!s.LastStock.TryGetValue(item, out int last))
@@ -445,15 +449,14 @@ internal sealed class KioskService
 
             // An entry that sold out is removed from the shop by the game, which counts as stock 0.
             int now = s.Shop.itemPriceAndStock.TryGetValue(item, out ItemStockInformation info) ? info.Stock : 0;
-            if (now >= last)
-                continue;
-
-            int units = last - now;
-            s.LastStock[item] = now;
-            string boughtId = item.QualifiedItemId;
-            s.Bought[boughtId] = (s.Bought.TryGetValue(boughtId, out int before) ? before : 0) + units;
-            sold.Add(new KeyValuePair<ISalable, int>(item, units));
+            if (now < last)
+                s.LastStock[item] = now;
         }
+
+        // How many units were really bought since the last look: what arrived in the bag. The shop's stock number
+        // cannot be trusted for this (the phone's quantity picker can buy more than the stock cap, and the stock
+        // then only drops by the cap, so the extra units were never charged at full price).
+        List<KeyValuePair<string, int>> sold = this.CountArrivals(s);
 
         if (sold.Count == 0)
         {
@@ -461,37 +464,38 @@ internal sealed class KioskService
             return;
         }
 
+        foreach (KeyValuePair<string, int> arrived in sold)
+            s.Bought[arrived.Key] = (s.Bought.TryGetValue(arrived.Key, out int before) ? before : 0) + arrived.Value;
+
         int left = this.DealsLeft();
         int totalSold = 0;
-        foreach (KeyValuePair<ISalable, int> entry in sold)
+        foreach (KeyValuePair<string, int> entry in sold)
             totalSold += entry.Value;
 
         int discountedUnits = Math.Min(totalSold, left);
-        DevLog.Say("kiosk purchase seen: units = ", totalSold);
-        DevLog.Say("kiosk deals left before = ", left, left - discountedUnits);
+        DevLog.Say("kiosk purchase seen: units = " + totalSold + ", deals left before = " + left + ", after = " + (left - discountedUnits));
 
-        // Safety net: the shop charged every unit the discounted price. Units beyond the remaining deals
-        // (should not happen any more because of the stock cap) pay the full price instead.
+        // Every unit was charged the discounted price by the shop. Units beyond the remaining deals pay the full price.
         int fullPriceUnits = totalSold - discountedUnits;
         if (fullPriceUnits > 0)
         {
             int toCharge = 0;
             int skip = discountedUnits;
-            foreach (KeyValuePair<ISalable, int> entry in sold)
+            foreach (KeyValuePair<string, int> entry in sold)
             {
                 int units = entry.Value;
                 int free = Math.Min(units, skip);
                 skip -= free;
                 int extra = units - free;
-                if (extra > 0)
-                {
-                    int original = s.Original[entry.Key].Price;
-                    toCharge += extra * (original - this.DiscountedPrice(original));
-                }
+                if (extra > 0 && s.OriginalById.TryGetValue(entry.Key, out OriginalEntry orig))
+                    toCharge += extra * (orig.Price - this.DiscountedPrice(orig.Price));
             }
 
+            DevLog.Say("kiosk over the daily limit: " + fullPriceUnits + " unit(s) charged full price, extra = " + toCharge + "g");
             if (toCharge > 0)
                 Game1.player.Money = Math.Max(0, Game1.player.Money - toCharge);
+
+            Game1.addHUDMessage(new HUDMessage($"Kiosk deal limit: {fullPriceUnits} item(s) over the limit were charged full price.", HUDMessage.achievement_type));
         }
 
         this.SetDealsLeft(left - discountedUnits);
@@ -504,6 +508,45 @@ internal sealed class KioskService
         }
 
         this.FinishDeals(s);
+    }
+
+    /// <summary>How many of each kiosk item the player holds right now (bag + the item on the shop cursor).</summary>
+    private Dictionary<string, int> CountBag(DealSession s)
+    {
+        Dictionary<string, int> counts = new Dictionary<string, int>();
+        foreach (string id in s.OriginalById.Keys)
+            counts[id] = 0;
+
+        foreach (Item? bagItem in Game1.player.Items)
+        {
+            if (bagItem == null)
+                continue;
+            if (counts.ContainsKey(bagItem.QualifiedItemId))
+                counts[bagItem.QualifiedItemId] += bagItem.Stack;
+        }
+
+        if (s.Shop.heldItem is Item held && counts.ContainsKey(held.QualifiedItemId))
+            counts[held.QualifiedItemId] += held.Stack;
+
+        return counts;
+    }
+
+    /// <summary>Units of each kiosk item that arrived since the last look (and moves the baseline forward).</summary>
+    private List<KeyValuePair<string, int>> CountArrivals(DealSession s)
+    {
+        Dictionary<string, int> now = this.CountBag(s);
+        List<KeyValuePair<string, int>> arrived = new List<KeyValuePair<string, int>>();
+
+        foreach (KeyValuePair<string, int> pair in now)
+        {
+            // An item we had no baseline for (the shop rebuilt its list) is not counted as bought.
+            int before = s.BagBaseline.TryGetValue(pair.Key, out int known) ? known : pair.Value;
+            if (pair.Value > before)
+                arrived.Add(new KeyValuePair<string, int>(pair.Key, pair.Value - before));
+        }
+
+        s.BagBaseline = now;
+        return arrived;
     }
 
     /// <summary>Discounted price and "at most <paramref name="left"/> in stock" for every entry that is still in the shop.</summary>

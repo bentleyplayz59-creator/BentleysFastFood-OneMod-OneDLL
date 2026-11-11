@@ -1,7 +1,7 @@
 {
   "Name": "Bentley's Fast Food",
   "Author": "Bentley Playz",
-  "Version": "3.16.4",
+  "Version": "3.16.5",
   "Description": "Adds Cheeseburger, French Fries, Coke, Windex, the Farmhand Snack Pack and Chicken Nuggets, breakfast and seasonal menus, Bentley's Fast Food restaurant on the Bus Stop (walk-in interior, ordering counter menu, dessert corner, arcade), the Restaurant Kiosk and Bentley the restaurant-owner NPC. One mod: this Content part and the Code part (a single DLL) live in the same folder.",
   "UniqueID": "BentleyPlayz.FastFoodUsefulStuff",
   "ContentPackFor": {
